@@ -1,2 +1,1 @@
-# Tourvisto_travel_app
-# Tourvisto_travel_app
+"I’ve set up the admin backend and implemented the core logic for admin signup and login. I also began integrating Google authentication using the Google Cloud Console. However, I encountered an error when testing it via Postman. For now, I’ve decided to focus on the admin features and will return later to troubleshoot and complete the Google OAuth integration once I resolve the issue related to the secret key."
