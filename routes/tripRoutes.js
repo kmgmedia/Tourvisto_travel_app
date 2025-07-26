@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { createTrip } = require("../controllers/tripController");
-const { protect } = require("../middleware/auth");
-const { adminOnly } = require("../middleware/admin");
+const { protect } = require("../middleware/authMiddleware");
 
-router.post("/create-trip", protect, adminOnly, createTrip);
+// Since base path is /api/trips in index.js, we just need /create here
+router.post("/create", protect, createTrip);
 
 module.exports = router;
