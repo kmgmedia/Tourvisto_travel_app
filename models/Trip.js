@@ -1,55 +1,35 @@
-const mongoose = require("mongoose");
+    const mongoose = require("mongoose");
 
-const tripSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: [true, "Trip title is required"],
-      trim: true,
-    },
-    description: {
-      type: String,
-      trim: true,
-    },
-    startDate: {
-      type: Date,
-    },
-    endDate: {
-      type: Date,
-    },
-    destinations: {
-      type: [
-        {
-          location: {
-            type: String,
-            required: [true, "Destination location is required"],
-            trim: true,
-          },
-          activities: [
-            {
-              type: String,
-              trim: true,
-            },
-          ],
+    const tripSchema = new mongoose.Schema(
+    {
+        title: {
+        type: String,
+        required: true,
         },
-      ],
-      validate: {
-        validator: function (arr) {
-          return arr.length > 0;
+        description: String,
+        destinations: {
+        type: [String],
+        required: true,
         },
-        message: "At least one destination is required",
-      },
-      required: [true, "Destinations are required"],
+        price: {
+        type: Number,
+        required: true,
+        },
+        date: {
+        type: Date,
+        required: true,
+        },
+        duration: {
+        type: String,
+        required: true,
+        },
+        createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+        },
     },
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: [true, "Trip must have a creator"],
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
+    { timestamps: true }
+    );
 
-module.exports = mongoose.model("Trip", tripSchema);
+    module.exports = mongoose.model("Trip", tripSchema);

@@ -3,6 +3,43 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
+// Register Customer
+const registerCustomer = asyncHandler(async (req, res) => {
+  const { name, email, password } = req.body;
+
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return res.status(400).json({ message: "Email already exists" });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const user = await User.create({
+    name,
+    email,
+    password: hashedPassword,
+    role: "user", // Customer role
+    googleId: null,
+  });
+
+  const token = jwt.sign(
+    { userId: user._id, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: "1d" }
+  );
+
+  res.status(201).json({
+    message: "Customer registered",
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
+    token,
+  });
+});
+
 // Register Admin
 const registerAdmin = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -72,7 +109,9 @@ const loginUser = asyncHandler(async (req, res) => {
   });
 });
 
+// Export all
 module.exports = {
+  registerCustomer,
   registerAdmin,
   loginUser,
 };

@@ -13,7 +13,6 @@ const protect = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Make sure decoded includes `userId`
     const user = await User.findById(decoded.userId).select("-password");
 
     if (!user) {
@@ -34,4 +33,13 @@ const protect = async (req, res, next) => {
   }
 };
 
-module.exports = { protect };
+// Add this middleware for admin-only access
+const adminOnly = (req, res, next) => {
+  if (req.user && req.user.role === "admin") {
+    next();
+  } else {
+    res.status(403).json({ message: "Access denied: Admins only" });
+  }
+};
+
+module.exports = { protect, adminOnly };

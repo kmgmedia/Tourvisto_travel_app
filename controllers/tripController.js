@@ -1,47 +1,34 @@
 const Trip = require("../models/Trip");
+const asyncHandler = require("express-async-handler");
 
-const createTrip = async (req, res) => {
-  const { title, description, destinations, price, date, duration } = req.body;
+// @desc    Create a trip (admin or customer)
+// @route   POST /api/trips
+// @access  Private
+const createTrip = asyncHandler(async (req, res) => {
+  const { title, description, destinations, price, date, duration, userId } =
+    req.body;
 
-  // Validate required fields
-  if (
-    !title ||
-    !Array.isArray(destinations) ||
-    destinations.length === 0 ||
-    !price ||
-    !date ||
-    !duration
-  ) {
+  if (!title || !destinations || !price || !date || !duration) {
     return res
       .status(400)
-      .json({
-        message: "All required fields must be filled, including destinations",
-      });
+      .json({ message: "All required fields must be filled" });
   }
 
-  try {
-    const newTrip = await Trip.create({
-      title,
-      description,
-      destinations,
-      price,
-      date,
-      duration,
-      createdBy: req.user._id, // Ensure req.user is set by auth middleware
-    });
+  const trip = await Trip.create({
+    title,
+    description,
+    destinations,
+    price,
+    date,
+    duration,
+    createdBy: userId && req.user.role === "admin" ? userId : req.user._id,
+  });
 
-    res.status(201).json({
-      message: "Trip created successfully",
-      trip: newTrip,
-    });
-  } catch (error) {
-    console.error("Create Trip Error:", error);
-    res.status(500).json({
-      message: "Server error",
-      error: error.message,
-    });
-  }
-};
+  res.status(201).json({
+    message: "Trip created successfully",
+    trip,
+  });
+});
 
 module.exports = {
   createTrip,

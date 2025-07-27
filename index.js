@@ -14,7 +14,11 @@ app.use(express.urlencoded({ extended: false }));
 
 // Routes
 app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/trips", require("./routes/tripRoutes")); // ✅ Trip Routes added
+app.use("/api/trips", require("./routes/tripRoutes")); // Trip Routes added
+app.use("/api/users", require("./routes/userRoutes")); // User Routes added
+app.use("/api/bookings", require("./routes/bookingRoutes")); // Booking Routes added
+
+
 
 // Start server after DB connection
 connectDB().then(() => {
