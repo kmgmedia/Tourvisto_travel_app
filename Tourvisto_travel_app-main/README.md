@@ -66,6 +66,12 @@ Development mode:
 npm run dev
 ```
 
+Standard start:
+
+```bash
+npm start
+```
+
 The API runs on:
 
 ```text
