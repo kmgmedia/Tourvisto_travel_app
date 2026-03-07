@@ -49,8 +49,14 @@ MONGO_URI=mongodb://127.0.0.1:27017/tourvisto
 Example MongoDB Atlas URI:
 
 ```env
-MONGO_URI=mongodb+srv://USERNAME:PASSWORD@cluster.mongodb.net/tourvisto?retryWrites=true&w=majority
+MONGO_URI=<paste your MongoDB Atlas connection string here>
 ```
+
+Atlas connection string notes:
+
+- Get the full value from MongoDB Atlas: Connect -> Drivers.
+- Do not commit real credentials or credential-shaped examples to the repository.
+- The connection string should include your cluster host, database name, and query options.
 
 ## Installation
 
